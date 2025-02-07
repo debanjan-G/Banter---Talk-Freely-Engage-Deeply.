@@ -1,15 +1,7 @@
-"use server";
-import { signIn } from "@/auth";
-import { signOut } from "@/auth";
+export { signInAction } from "./signin";
+export { signOutAction } from "./signout";
+export { createCommentAction } from "./create-comment";
+export { createPostAction } from "./create-post";
+export { createTopicAction } from "./create-topic";
 
-export const signInAction = async () => {
-  console.log("Signing in user...");
-
-  return signIn("google");
-};
-
-export const signOutAction = async () => {
-  console.log("Signing out user...");
-
-  return signOut();
-};
+//importing all server actions  and exporting them from the index.ts file
