@@ -1,6 +1,6 @@
 import SigninBtn from "@/components/SigninBtn";
 import SignoutBtn from "@/components/SignoutBtn";
-// import * as actions from "@/actions";
+import paths from "@/utils/paths";
 import { auth } from "@/auth";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ export default async function Home() {
 
   return (
     <div className="p-4 flex flex-col items-center">
-      <h1 className="text-2xl font-bold text-center">Banter</h1>
+      <h1 className="text-2xl font-bold text-center">Welcome!</h1>
       <div className="flex justify-center gap-4">
         <SigninBtn />
         <SignoutBtn />
@@ -27,6 +27,26 @@ export default async function Home() {
       ) : (
         <h1>User is signed out!</h1>
       )}
+      <div className="flex justify-center gap-4 p-4  ">
+        <Link
+          className="outline outline-slate-400 rounded p-2 hover:scale-105 transition-all duration-300"
+          href={paths.viewTopic("javascript")}
+        >
+          View posts of a topic
+        </Link>
+        <Link
+          className="outline outline-slate-400 rounded p-2 hover:scale-105 transition-all duration-300"
+          href={paths.viewPost("javascript", 1)}
+        >
+          View A Post
+        </Link>
+        <Link
+          className="outline outline-slate-400 rounded p-2 hover:scale-105 transition-all duration-300"
+          href={paths.createPost("javascript")}
+        >
+          Create A Post
+        </Link>
+      </div>
     </div>
   );
 }
