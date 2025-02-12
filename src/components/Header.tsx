@@ -17,6 +17,8 @@ import SignupBtn from "./SignupBtn";
 import SignoutBtn from "./SignoutBtn";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import SigninBtn from "./SigninBtn";
+import { signOutAction } from "@/actions";
 
 export const SearchIcon = ({
   size = 24,
@@ -57,20 +59,24 @@ export const SearchIcon = ({
 export default function Header() {
   const session = useSession();
 
-  // const [isSignedIn, setIsSignedIn] = useState(true);
+  const handleSignout = async () => {
+    await signOutAction();
+  };
 
   return (
     <Navbar isBordered>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-          <Link href="/" className="font-extrabold text-xl">
+          <Link href="/" className="font-extrabold text-2xl">
             Banter
           </Link>
         </NavbarBrand>
+      </NavbarContent>
 
+      <NavbarContent justify="center">
         <Input
           classNames={{
-            base: " max-w-full sm:max-w-[10rem] h-10",
+            base: " max-w-full sm:max-w-[15rem] h-10",
             mainWrapper: "h-full",
             input: "text-small",
             inputWrapper:
@@ -86,6 +92,7 @@ export default function Header() {
       <NavbarContent as="div" className="items-center" justify="end">
         {session.data?.user ? (
           <Dropdown placement="bottom-end">
+            {/* <DropdownTrigger> defines what should be clicked to make the dropdown menu appear */}
             <DropdownTrigger>
               <Avatar
                 isBordered
@@ -94,24 +101,32 @@ export default function Header() {
                 color="secondary"
                 name="Debanjan Ghosal"
                 size="sm"
-                src=""
+                src={session.data.user?.image || ""}
               />
             </DropdownTrigger>
+
+            {/* Actual content of the dropdown menu is defined by <Dropdown Menu> */}
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">{session.data.user.email}</p>
               </DropdownItem>
               <DropdownItem key="logout">
-                <SignoutBtn />
+                <p
+                  onClick={handleSignout}
+                  className="text-red-500 font-semibold"
+                >
+                  Logout
+                </p>
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         ) : (
-          <SignupBtn />
+          <>
+            <SignupBtn />
+            <SigninBtn />
+          </>
         )}
-
-        {/* )} */}
       </NavbarContent>
     </Navbar>
   );
