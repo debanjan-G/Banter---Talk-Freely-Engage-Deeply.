@@ -1,23 +1,11 @@
-import SigninBtn from "@/components/SigninBtn";
-import SignoutBtn from "@/components/SignoutBtn";
 import paths from "@/utils/paths";
-import { auth } from "@/auth";
 import Link from "next/link";
 
 export default async function Home() {
-  const session = await auth();
-
   return (
     <div className="p-4 flex flex-col items-center">
       <h1 className="text-2xl font-bold text-center">Welcome to Banter!</h1>
 
-      {session?.user ? (
-        <div>
-          <h1 className="my-4">User is signed in!</h1>
-        </div>
-      ) : (
-        <h1>User is signed out!</h1>
-      )}
       <div className="flex justify-center gap-4 p-4  ">
         <Link
           className="outline outline-slate-400 rounded p-2 hover:scale-105 transition-all duration-300"

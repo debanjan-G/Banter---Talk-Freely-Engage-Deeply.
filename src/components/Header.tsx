@@ -14,13 +14,17 @@ import {
 
 import Link from "next/link";
 import SignupBtn from "./SignupBtn";
-import SignoutBtn from "./SignoutBtn";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import SigninBtn from "./SigninBtn";
-import { signOutAction } from "@/actions";
 
-export const SearchIcon = ({
+interface SearchIconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number;
+  strokeWidth?: number;
+  width?: number | string;
+  height?: number | string;
+}
+
+export const SearchIcon: React.FC<SearchIconProps> = ({
   size = 24,
   strokeWidth = 1.5,
   width,
@@ -59,16 +63,12 @@ export const SearchIcon = ({
 export default function Header() {
   const session = useSession();
 
-  const handleSignout = async () => {
-    await signOutAction();
-  };
-
   return (
     <Navbar isBordered>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
           <Link href="/" className="font-extrabold text-2xl">
-            Banter
+            Banter.
           </Link>
         </NavbarBrand>
       </NavbarContent>
@@ -113,7 +113,7 @@ export default function Header() {
               </DropdownItem>
               <DropdownItem key="logout">
                 <p
-                  onClick={handleSignout}
+                  onClick={() => signOut()}
                   className="text-red-500 font-semibold"
                 >
                   Logout

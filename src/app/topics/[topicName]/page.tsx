@@ -1,15 +1,17 @@
 import React from "react";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     topicName: string;
-  };
+  }>;
 }
 
-const page = ({ params }: PageProps) => {
+const page = async ({ params }: PageProps) => {
+  const { topicName } = await params;
+
   return (
     <div className="text-4xl font-light text-center">
-      VIEW TOPIC PAGE: {params.topicName}
+      VIEW TOPIC PAGE: {topicName}
     </div>
   );
 };
