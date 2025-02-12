@@ -9,20 +9,11 @@ export default async function Home() {
 
   return (
     <div className="p-4 flex flex-col items-center">
-      <h1 className="text-2xl font-bold text-center">Welcome!</h1>
-      <div className="flex justify-center gap-4">
-        <SigninBtn />
-        <SignoutBtn />
-      </div>
+      <h1 className="text-2xl font-bold text-center">Welcome to Banter!</h1>
+
       {session?.user ? (
         <div>
           <h1 className="my-4">User is signed in!</h1>
-          <Link
-            className="outline outline-slate-300 rounded p-2"
-            href="/profile"
-          >
-            Go to profile
-          </Link>
         </div>
       ) : (
         <h1>User is signed out!</h1>
