@@ -12,18 +12,28 @@ import {
   Textarea,
 } from "@heroui/react";
 
+import { useActionState, useState } from "react";
+
 import React from "react";
 import * as actions from "@/actions";
 
 const CreateTopicModal = () => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const [formState, formAction] = useActionState(actions.createTopicAction, {
+    errors: {},
+  });
+
   return (
     <div className="my-4">
       <Button onPress={onOpen} color="secondary">
         New Topic
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <form action={actions.createTopicAction}>
+        <form action={formAction}>
           <ModalContent>
             {(onClose) => (
               <>
@@ -37,21 +47,28 @@ const CreateTopicModal = () => {
                     color="primary"
                     label="Title"
                     type="text"
+                    errorMessage={formState.errors?.title?.join(", ")}
+                    isInvalid={!!formState.errors?.title}
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
+
                   <Textarea
                     name="description"
                     className="w-full"
                     color="primary"
-                    defaultValue=""
                     label="Description"
-                    type="text"
+                    errorMessage={formState.errors?.description?.join(", ")}
+                    isInvalid={!!formState.errors?.description}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>
                     Close
                   </Button>
-                  <Button type="submit" color="primary" onPress={onClose}>
+                  <Button type="submit" color="primary">
                     Submit
                   </Button>
                 </ModalFooter>
