@@ -90,43 +90,43 @@ export default function Header() {
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
-        {session.data?.user ? (
-          <Dropdown placement="bottom-end">
-            {/* <DropdownTrigger> defines what should be clicked to make the dropdown menu appear */}
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                color="secondary"
-                name="Debanjan Ghosal"
-                size="sm"
-                src={session.data.user?.image || ""}
-              />
-            </DropdownTrigger>
+        {session.status !== "loading" ? (
+          session.data?.user ? (
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <Avatar
+                  isBordered
+                  as="button"
+                  className="transition-transform"
+                  color="secondary"
+                  name="Debanjan Ghosal"
+                  size="sm"
+                  src={session.data.user?.image || ""}
+                />
+              </DropdownTrigger>
 
-            {/* Actual content of the dropdown menu is defined by <Dropdown Menu> */}
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{session.data.user.email}</p>
-              </DropdownItem>
-              <DropdownItem key="logout">
-                <p
-                  onClick={() => signOut()}
-                  className="text-red-500 font-semibold"
-                >
-                  Logout
-                </p>
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        ) : (
-          <>
-            <SignupBtn />
-            <SigninBtn />
-          </>
-        )}
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem key="profile" className="h-14 gap-2">
+                  <p className="font-semibold">Signed in as</p>
+                  <p className="font-semibold">{session.data.user.email}</p>
+                </DropdownItem>
+                <DropdownItem key="logout">
+                  <p
+                    onClick={() => signOut()}
+                    className="text-red-500 font-semibold cursor-pointer"
+                  >
+                    Logout
+                  </p>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          ) : (
+            <>
+              <SignupBtn />
+              <SigninBtn />
+            </>
+          )
+        ) : null}
       </NavbarContent>
     </Navbar>
   );
