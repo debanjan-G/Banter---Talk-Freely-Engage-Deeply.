@@ -26,8 +26,8 @@ const CreateTopicModal = () => {
   });
 
   return (
-    <div className="my-4">
-      <Button onPress={onOpen} color="secondary">
+    <div className="my-4 w-full">
+      <Button className="mx-auto w-full" onPress={onOpen} color="secondary">
         New Topic
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

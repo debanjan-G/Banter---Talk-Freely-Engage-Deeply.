@@ -11,7 +11,7 @@ const page = async ({ params }: PageProps) => {
 
   return (
     <div className="text-4xl font-light text-center">
-      VIEW TOPIC PAGE: {topicName}
+      VIEW TOPIC PAGE: {decodeURIComponent(topicName)}
     </div>
   );
 };

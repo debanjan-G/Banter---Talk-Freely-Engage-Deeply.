@@ -1,6 +1,11 @@
 "use server";
 import { auth } from "@/auth";
 import { z } from "zod";
+import { db } from "@/db";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import paths from "@/utils/paths";
+import { Topic } from "@prisma/client";
 
 // creating schema for validation
 const topicSchema = z.object({
@@ -56,11 +61,36 @@ export const createTopicAction = async (
     };
   }
 
-  return {
-    errors: {},
-  };
+  // save entry to database
+  let topic: Topic;
+  try {
+    topic = await db.topic.create({
+      data: {
+        slug: result.data.title,
+        description: result.data.description,
+      },
+    });
+  } catch (error: unknown) {
+    console.log("ERROR while saving to DB: ", error);
+
+    if (error instanceof Error) {
+      return {
+        errors: {
+          _form: [error.message],
+        },
+      };
+    } else {
+      return {
+        errors: {
+          _form: ["Something Went Wrong!"],
+        },
+      };
+    }
+  }
 
   // revalidate home path
+  revalidatePath("/");
 
   // redirect user to that topic route
+  redirect(paths.viewTopic(topic.slug));
 };
