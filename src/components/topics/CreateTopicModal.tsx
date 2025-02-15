@@ -21,9 +21,12 @@ import * as actions from "@/actions";
 const CreateTopicModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [formState, formAction] = useActionState(actions.createTopicAction, {
-    errors: {},
-  });
+  const [formState, formAction, isPending] = useActionState(
+    actions.createTopicAction,
+    {
+      errors: {},
+    }
+  );
 
   return (
     <div className="my-4 w-full">
@@ -68,15 +71,9 @@ const CreateTopicModal = () => {
                   <Button color="danger" variant="light" onPress={onClose}>
                     Close
                   </Button>
-                  {/* <Button type="submit" color="primary">
-                    Submit
-                  </Button> */}
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white text-sm p-2 rounded"
-                  >
-                    Submit
-                  </button>
+                  <Button isLoading={isPending} type="submit" color="primary">
+                    {!isPending && "Submit"}
+                  </Button>
                 </ModalFooter>
               </>
             )}
