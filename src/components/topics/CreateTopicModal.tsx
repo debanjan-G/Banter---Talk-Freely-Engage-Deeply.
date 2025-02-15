@@ -10,17 +10,15 @@ import {
   useDisclosure,
   Input,
   Textarea,
+  Alert,
 } from "@heroui/react";
 
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 
 import React from "react";
 import * as actions from "@/actions";
 
 const CreateTopicModal = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [formState, formAction] = useActionState(actions.createTopicAction, {
@@ -44,33 +42,41 @@ const CreateTopicModal = () => {
                   <Input
                     name="title"
                     className="w-full"
-                    color="primary"
+                    color="default"
                     label="Title"
                     type="text"
-                    errorMessage={formState.errors?.title?.join(", ")}
-                    isInvalid={!!formState.errors?.title}
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    isInvalid={!!formState.errors.title}
+                    errorMessage={formState.errors.title?.join(", ")}
                   />
 
                   <Textarea
                     name="description"
                     className="w-full"
-                    color="primary"
+                    color="default"
                     label="Description"
-                    errorMessage={formState.errors?.description?.join(", ")}
-                    isInvalid={!!formState.errors?.description}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    isInvalid={!!formState.errors.description}
+                    errorMessage={formState.errors.description?.join(", ")}
                   />
+                  {formState.errors._form && (
+                    <Alert
+                      color="danger"
+                      title={formState.errors._form?.join(", ")}
+                    />
+                  )}
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>
                     Close
                   </Button>
-                  <Button type="submit" color="primary">
+                  {/* <Button type="submit" color="primary">
                     Submit
-                  </Button>
+                  </Button> */}
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white text-sm p-2 rounded"
+                  >
+                    Submit
+                  </button>
                 </ModalFooter>
               </>
             )}

@@ -1,4 +1,5 @@
 "use server";
+import { auth } from "@/auth";
 import { z } from "zod";
 
 // creating schema for validation
@@ -21,6 +22,7 @@ interface formStateType {
   errors: {
     title?: string[]; // 'title' property may or may not be present
     description?: string[]; //  'description' property may or may not be present
+    _form?: string[]; // for db errors and authentication issues
   };
 }
 
@@ -28,6 +30,16 @@ export const createTopicAction = async (
   formState: formStateType,
   formData: FormData
 ): Promise<formStateType> => {
+  // if user is not logged in and tries to create a new topic, show him error
+  const session = await auth();
+  if (!session?.user) {
+    return {
+      errors: {
+        _form: ["Please Signin to create a topic"],
+      },
+    };
+  }
+
   // getting hold of data that is to be validated
   const title = formData.get("title");
   const description = formData.get("description");
@@ -35,9 +47,10 @@ export const createTopicAction = async (
   // perform validation checks
   const result = topicSchema.safeParse({ title, description });
   if (result.success) {
-    console.log("Validation successful!", result.data);
+    console.log("Validation successful: ", result.data);
   } else {
-    console.log("Validation Failed");
+    console.log(result.error.flatten().fieldErrors);
+
     return {
       errors: result.error.flatten().fieldErrors,
     };
