@@ -32,6 +32,16 @@ const page = async ({ params }: PageProps) => {
     },
   });
 
+  // Fetch authors for posts
+  const authorNames = await Promise.all(
+    posts.map(async (post) => {
+      const author = await db.user.findFirst({
+        where: { id: post.userId },
+      });
+      return author?.name || "Unknown";
+    })
+  );
+
   return (
     <div className="px-10 py-4 grid grid-cols-4 gap-10 place-content-center">
       {/* Left section (Posts) */}
@@ -44,11 +54,11 @@ const page = async ({ params }: PageProps) => {
               contribute, and your post will appear here.
             </h1>
           ) : (
-            posts.map((post) => (
+            posts.map((post, index) => (
               <PostCard
                 key={post.id}
                 title={post.title}
-                author={post.userId}
+                author={authorNames[index]}
                 comments="10"
               />
             ))

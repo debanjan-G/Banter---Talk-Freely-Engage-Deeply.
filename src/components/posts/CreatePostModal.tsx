@@ -43,7 +43,6 @@ const CreatePostModal = ({ topicId }: createPostModalPropsType) => {
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <form action={formAction}>
-          <input type="hidden" name="userId" value={userId || ""} />
           <input type="hidden" name="topicId" value={topicId || ""} />
           <ModalContent>
             {(onClose) => (
@@ -82,12 +81,7 @@ const CreatePostModal = ({ topicId }: createPostModalPropsType) => {
                   <Button color="danger" variant="light" onPress={onClose}>
                     Close
                   </Button>
-                  <Button
-                    onPress={isPending ? undefined : onClose}
-                    isDisabled={isPending}
-                    type="submit"
-                    color="primary"
-                  >
+                  <Button isDisabled={isPending} type="submit" color="primary">
                     {isPending ? (
                       <Spinner color="default" size="sm" />
                     ) : (

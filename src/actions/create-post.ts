@@ -3,8 +3,11 @@
 import { auth } from "@/auth";
 import { z } from "zod";
 import { Post } from "@prisma/client";
+import { Topic } from "@prisma/client";
 import { db } from "@/db";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import paths from "@/utils/paths";
 
 interface formStateType {
   errors: {
@@ -45,6 +48,7 @@ export const createPostAction = async (
       },
     };
   }
+
   // perform form validation checks
   const result = postSchema.safeParse({
     title: formData.get("title"),
@@ -59,11 +63,11 @@ export const createPostAction = async (
     };
   }
 
-  // Extract userId and topicId safely
-  const userId = formData.get("userId") as string | null;
+  // Extract topicId safely
   const topicId = formData.get("topicId") as string | null;
 
-  if (!userId || !topicId) {
+  // checking if userId and topicId exists
+  if (!session.user.id || !topicId) {
     return {
       errors: {
         _form: ["Missing userId or topicId!"],
@@ -78,7 +82,7 @@ export const createPostAction = async (
       data: {
         title: result.data.title,
         content: result.data.content,
-        userId,
+        userId: session.user.id,
         topicId,
       },
     });
@@ -97,7 +101,32 @@ export const createPostAction = async (
   // Revalidate view topic path
   revalidatePath("/");
 
-  return {
-    errors: {},
-  };
+  // fetching the topic name
+  let topic: Topic | null;
+  try {
+    topic = await db.topic.findFirst({
+      where: {
+        id: topicId,
+      },
+    });
+
+    if (!topic) throw new Error("Topic not found!");
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return {
+        errors: {
+          _form: [error.message],
+        },
+      };
+    } else {
+      return {
+        errors: {
+          _form: ["Something went wrong!"],
+        },
+      };
+    }
+  }
+
+  // Redirect user to topic page
+  redirect(paths.viewTopic(topic.slug));
 };
