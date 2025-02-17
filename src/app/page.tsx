@@ -11,9 +11,15 @@ export default function Home() {
       <div className="flex justify-evenly gap-10">
         <PostsContainer>
           <h1 className="text-center text-xl font-bold">Popular Posts</h1>
-          <p className="border border-slate-300 rounded p-4 my-2">Post 1</p>
-          <p className="border border-slate-300 rounded p-4 my-2">Post 4</p>
-          <p className="border border-slate-300 rounded p-4 my-2">Post 3</p>
+          <p className="w-full border border-slate-300 rounded p-4 my-2">
+            Post 1
+          </p>
+          <p className="w-full border border-slate-300 rounded p-4 my-2">
+            Post 4
+          </p>
+          <p className="w-full border border-slate-300 rounded p-4 my-2">
+            Post 3
+          </p>
         </PostsContainer>
         <div className="w-1/4 flex-col justify-center items-center gap-4">
           <CreateTopicModal />

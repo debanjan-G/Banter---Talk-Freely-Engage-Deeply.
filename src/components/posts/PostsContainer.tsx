@@ -6,7 +6,7 @@ interface propsType {
 
 const PostsContainer = ({ children }: propsType) => {
   return (
-    <div className="w-1/2 flex flex-col gap-4 items-center outline outline-slate-300 rounded p-6 ">
+    <div className="w-full flex flex-col gap-4 outline outline-slate-300 rounded p-6 ">
       {children}
     </div>
   );

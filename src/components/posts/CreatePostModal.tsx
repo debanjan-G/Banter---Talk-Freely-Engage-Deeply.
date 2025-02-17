@@ -11,12 +11,30 @@ import {
   Input,
   Textarea,
   Alert,
+  Spinner,
 } from "@heroui/react";
 
-import React from "react";
+import * as actions from "@/actions";
 
-const CreatePostModal = () => {
+import React, { useActionState, useState } from "react";
+import { useSession } from "next-auth/react";
+
+interface createPostModalPropsType {
+  topicId: string;
+}
+
+const CreatePostModal = ({ topicId }: createPostModalPropsType) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const session = useSession();
+  const userId = session.data?.user?.id;
+
+  const [formState, formAction, isPending] = useActionState(
+    actions.createPostAction,
+    {
+      errors: {},
+    }
+  );
 
   return (
     <div className="my-4 w-full">
@@ -24,39 +42,63 @@ const CreatePostModal = () => {
         New Post
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="text-2xl flex flex-col gap-1">
-                Create New Post
-              </ModalHeader>
-              <ModalBody>
-                <Input
-                  name="title"
-                  className="w-full"
-                  color="default"
-                  label="Title"
-                  type="text"
-                />
+        <form action={formAction}>
+          <input type="hidden" name="userId" value={userId || ""} />
+          <input type="hidden" name="topicId" value={topicId || ""} />
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="text-2xl flex flex-col gap-1">
+                  Create New Post
+                </ModalHeader>
+                <ModalBody>
+                  <Input
+                    name="title"
+                    className="w-full"
+                    color="default"
+                    label="Title"
+                    type="text"
+                    isInvalid={!!formState.errors.title}
+                    errorMessage={formState.errors.title?.join(", ")}
+                  />
 
-                <Textarea
-                  name="content"
-                  className="w-full"
-                  color="default"
-                  label="Content"
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button type="submit" color="primary">
-                  Create
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
+                  <Textarea
+                    name="content"
+                    className="w-full"
+                    color="default"
+                    label="Content"
+                    isInvalid={!!formState.errors.content}
+                    errorMessage={formState.errors.content?.join(", ")}
+                  />
+
+                  {formState.errors._form && (
+                    <Alert
+                      color="danger"
+                      title={formState.errors._form.join(", ")}
+                    />
+                  )}
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Close
+                  </Button>
+                  <Button
+                    onPress={isPending ? undefined : onClose}
+                    isDisabled={isPending}
+                    type="submit"
+                    color="primary"
+                  >
+                    {isPending ? (
+                      <Spinner color="default" size="sm" />
+                    ) : (
+                      "Create"
+                    )}
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </form>
       </Modal>
     </div>
   );

@@ -11,7 +11,7 @@ interface PropsType {
 
 const PostCard = (props: PropsType) => {
   return (
-    <Card className="w-full max-w-[400px]">
+    <Card className="w-full">
       <CardHeader className="flex gap-3">
         <p className="text-lg font-semibold">{props.title}</p>
       </CardHeader>
