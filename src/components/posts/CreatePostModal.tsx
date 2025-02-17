@@ -16,7 +16,7 @@ import {
 
 import * as actions from "@/actions";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState } from "react";
 import { useSession } from "next-auth/react";
 
 interface createPostModalPropsType {

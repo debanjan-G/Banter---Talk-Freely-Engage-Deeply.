@@ -8,10 +8,10 @@ interface PageProps {
 }
 
 const page = async ({ params }: PageProps) => {
-  const { postId, topicName } = await params;
+  const { topicName } = await params;
   return (
     <div className="text-2xl font-light text-center">
-      VIEW POST {postId} of {topicName}
+      VIEW ALL POSTS under topic of {topicName}
     </div>
   );
 };

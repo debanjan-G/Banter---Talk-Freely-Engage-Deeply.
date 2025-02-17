@@ -2,10 +2,9 @@
 
 import { auth } from "@/auth";
 import { z } from "zod";
-import { Post } from "@prisma/client";
-import { Topic } from "@prisma/client";
 import { db } from "@/db";
 import { revalidatePath } from "next/cache";
+import { Post } from "@prisma/client";
 import { redirect } from "next/navigation";
 import paths from "@/utils/paths";
 
@@ -86,31 +85,6 @@ export const createPostAction = async (
         topicId,
       },
     });
-
-    console.log("Saved post to DB: ", post);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return {
-        errors: {
-          _form: [error.message],
-        },
-      };
-    }
-  }
-
-  // Revalidate view topic path
-  revalidatePath("/");
-
-  // fetching the topic name
-  let topic: Topic | null;
-  try {
-    topic = await db.topic.findFirst({
-      where: {
-        id: topicId,
-      },
-    });
-
-    if (!topic) throw new Error("Topic not found!");
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {
@@ -121,12 +95,32 @@ export const createPostAction = async (
     } else {
       return {
         errors: {
-          _form: ["Something went wrong!"],
+          _form: ["Failed to create post!"],
         },
       };
     }
   }
 
-  // Redirect user to topic page
-  redirect(paths.viewTopic(topic.slug));
+  // // Revalidate view topic path
+  // revalidatePath("/topics");
+
+  // fetching the topic name
+  const topic = await db.topic.findFirst({
+    where: {
+      id: topicId,
+    },
+  });
+
+  if (!topic)
+    return {
+      errors: {
+        _form: ["Topic not found!"],
+      },
+    };
+
+  // revalidate topic page (here it is optional unless we are caching the dynamic route using generateStaticParams())
+  revalidatePath(paths.viewTopic(topic.slug));
+
+  // Redirect user to post page
+  redirect(paths.viewPost(topic.slug, Number(post.id)));
 };
