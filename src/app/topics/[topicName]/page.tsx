@@ -1,9 +1,10 @@
 import PostsContainer from "@/components/posts/PostsContainer";
-import PostCard from "@/components/posts/PostCard";
 import React from "react";
 import CreatePostModal from "@/components/posts/CreatePostModal";
 import { db } from "@/db";
 import { notFound } from "next/navigation";
+import PostList from "@/components/posts/post-list";
+import { fetchPostsByTopicName } from "@/db/queries/post-query";
 
 interface PageProps {
   params: Promise<{
@@ -25,44 +26,13 @@ const page = async ({ params }: PageProps) => {
     return notFound();
   }
 
-  // fetch posts from db
-  const posts = await db.post.findMany({
-    where: {
-      topicId: topic.id,
-    },
-  });
-
-  // Fetch authors for posts
-  const authorNames = await Promise.all(
-    posts.map(async (post) => {
-      const author = await db.user.findFirst({
-        where: { id: post.userId },
-      });
-      return author?.name || "Unknown";
-    })
-  );
-
   return (
     <div className="px-10 py-4 grid grid-cols-4 gap-10 place-content-center">
       {/* Left section (Posts) */}
       <div className="col-span-3 flex flex-col gap-6">
         <h1 className=" text-3xl font-bold">{decodeURIComponent(topicName)}</h1>
         <PostsContainer>
-          {posts.length == 0 ? (
-            <h1 className="text-lg">
-              No posts have been created under this topic yet. Be the first to
-              contribute, and your post will appear here.
-            </h1>
-          ) : (
-            posts.map((post, index) => (
-              <PostCard
-                key={post.id}
-                title={post.title}
-                author={authorNames[index]}
-                comments="10"
-              />
-            ))
-          )}
+          <PostList fetchPost={() => fetchPostsByTopicName(topicName)} />
         </PostsContainer>
       </div>
 

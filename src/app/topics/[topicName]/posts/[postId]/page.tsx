@@ -1,3 +1,6 @@
+import PostShow from "@/components/posts/post-show";
+import { db } from "@/db";
+import { notFound } from "next/navigation";
 import React from "react";
 
 interface PageProps {
@@ -8,12 +11,19 @@ interface PageProps {
 }
 
 const page = async ({ params }: PageProps) => {
-  const { topicName } = await params;
-  return (
-    <div className="text-2xl font-light text-center">
-      VIEW ALL POSTS under topic of {topicName}
-    </div>
-  );
+  const { postId, topicName } = await params;
+  // fetch post from DB
+  const post = await db.post.findFirst({
+    where: {
+      id: postId,
+    },
+  });
+
+  if (!post) {
+    return notFound();
+  }
+
+  return <PostShow title={post.title} content={post.content} />;
 };
 
 export default page;
