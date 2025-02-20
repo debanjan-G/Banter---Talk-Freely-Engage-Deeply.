@@ -1,7 +1,12 @@
 import PostShow from "@/components/posts/post-show";
 import { db } from "@/db";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import React from "react";
+import paths from "@/utils/paths";
+import CommentCreateForm from "@/components/comments/comment-create-form";
+import CommentList from "@/components/comments/comment-list";
+import { getCommentsByPostId } from "@/db/queries/comment-query";
 
 interface PageProps {
   params: Promise<{
@@ -12,18 +17,15 @@ interface PageProps {
 
 const page = async ({ params }: PageProps) => {
   const { postId, topicName } = await params;
-  // fetch post from DB
-  const post = await db.post.findFirst({
-    where: {
-      id: postId,
-    },
-  });
 
-  if (!post) {
-    return notFound();
-  }
-
-  return <PostShow title={post.title} content={post.content} />;
+  return (
+    <div className="p-4">
+      <Link href={paths.viewTopic(topicName)}>← back to {topicName}</Link>
+      <PostShow postId={postId} />;
+      <CommentCreateForm postId={postId} topicName={topicName} startOpen />
+      <CommentList fetchComments={() => getCommentsByPostId(postId)} />
+    </div>
+  );
 };
 
 export default page;

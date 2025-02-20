@@ -1,26 +1,30 @@
 "use client";
 
-import { useFormState } from "react-dom";
+// import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { useEffect, useRef, useState } from "react";
-import { Textarea, Button } from "@nextui-org/react";
-import FormButton from "@/components/common/form-button";
+import { Textarea, Button, Alert, Spinner } from "@heroui/react";
+// import FormButton from "@/components/common/form-button";
 import * as actions from "@/actions";
 
 interface CommentCreateFormProps {
   postId: string;
+  topicName: string;
   parentId?: string;
   startOpen?: boolean;
 }
 
 export default function CommentCreateForm({
   postId,
+  topicName,
   parentId,
   startOpen,
 }: CommentCreateFormProps) {
   const [open, setOpen] = useState(startOpen);
   const ref = useRef<HTMLFormElement | null>(null);
-  const [formState, action] = useFormState(
-    actions.createComment.bind(null, { postId, parentId }),
+
+  const [formState, action, isPending = true] = useActionState(
+    actions.createCommentAction,
     { errors: {} }
   );
 
@@ -35,7 +39,10 @@ export default function CommentCreateForm({
   }, [formState, startOpen]);
 
   const form = (
-    <form action={action} ref={ref}>
+    <form className="my-2" action={action} ref={ref}>
+      <input type="hidden" name="postId" value={postId} />
+      <input type="hidden" name="topicName" value={topicName} />
+      <input type="hidden" name="parentId" value={parentId} />
       <div className="space-y-2 px-1">
         <Textarea
           name="content"
@@ -46,21 +53,30 @@ export default function CommentCreateForm({
         />
 
         {formState.errors._form ? (
-          <div className="p-2 bg-red-200 border rounded border-red-400">
-            {formState.errors._form?.join(", ")}
-          </div>
+          <Alert color="danger">{formState.errors._form.join(", ")}</Alert>
         ) : null}
-
-        <FormButton>Create Comment</FormButton>
+        <div className="flex justify-end">
+          <Button color="secondary" type="submit">
+            {isPending ? <Spinner color="default" /> : "Create Comment"}
+          </Button>
+        </div>
       </div>
     </form>
   );
 
   return (
-    <div>
-      <Button size="sm" variant="light" onClick={() => setOpen(!open)}>
-        Reply
-      </Button>
+    <div className="w-1/2 mx-auto">
+      <div className="flex justify-center">
+        <Button
+          className="w-1/3 mx-auto hover:bg-blue-500 hover:text-white transition-all duration-300"
+          color="primary"
+          size="md"
+          variant="bordered"
+          onPress={() => setOpen(!open)}
+        >
+          Reply
+        </Button>
+      </div>
       {open && form}
     </div>
   );

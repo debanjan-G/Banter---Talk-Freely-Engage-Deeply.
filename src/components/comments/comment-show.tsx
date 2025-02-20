@@ -1,13 +1,15 @@
 import Image from "next/image";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/button";
 import CommentCreateForm from "@/components/comments/comment-create-form";
+import { enrichedComment } from "@/db/queries/comment-query";
 
 interface CommentShowProps {
   commentId: string;
+  comments: enrichedComment[];
 }
 
-// TODO: Get a list of comments
-export default function CommentShow({ commentId }: CommentShowProps) {
+// TODO: Get a list of comments as 'comments' (data fetching)
+export default function CommentShow({ commentId, comments }: CommentShowProps) {
   const comment = comments.find((c) => c.id === commentId);
 
   if (!comment) {

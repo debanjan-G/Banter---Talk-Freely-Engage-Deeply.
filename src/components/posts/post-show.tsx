@@ -1,24 +1,24 @@
-"use client";
-
-import { Card, CardBody, CardHeader, Divider } from "@heroui/react";
+import { db } from "@/db";
+import PostContent from "./post-content";
+import { notFound } from "next/navigation";
 
 interface PostShowProps {
-  title: string;
-  content: string;
+  postId: string;
 }
 
-export default function PostShow({ title, content }: PostShowProps) {
+export default async function PostShow({ postId }: PostShowProps) {
+  const post = await db.post.findFirst({
+    where: {
+      id: postId,
+    },
+  });
+
+  if (!post) return notFound();
+
   return (
-    <div className="m-4 p-6 w-1/2 mx-auto">
-      <Card>
-        <CardHeader>
-          <p className="text-2xl font-semibold "> {title}</p>
-        </CardHeader>
-        <Divider />
-        <CardBody>
-          <p>{content}</p>
-        </CardBody>
-      </Card>
-    </div>
+    <>
+      {/* <PostContent> display only the title and content of the post */}
+      <PostContent title={post.title} content={post.content} />
+    </>
   );
 }

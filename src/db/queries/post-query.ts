@@ -9,9 +9,11 @@ export type EnrichedPost = Post & {
 
 // we wont perform the data fetching here. Data fetching will be performed by the child component itself. SO we are not awaiting the DB queries.
 
-export function fetchTopPosts(): Promise<PostsType[]> {}
+export function fetchTopPosts(): Promise<EnrichedPost[]> {}
 
-export function fetchPostsByTopicName(topicName: string): Promise<PostsType[]> {
+export function fetchPostsByTopicName(
+  topicName: string
+): Promise<EnrichedPost[]> {
   return db.post.findMany({
     where: {
       topic: {
@@ -35,5 +37,5 @@ export function fetchPostsByTopicName(topicName: string): Promise<PostsType[]> {
         },
       },
     },
-  }) as Promise<PostsType[]>; // Type assertion to match PostsType
+  }) as Promise<EnrichedPost[]>; // Type assertion to match PostsType
 }
