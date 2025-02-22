@@ -21,7 +21,7 @@ export default function CommentCreateForm({
   const [open, setOpen] = useState(startOpen);
   const ref = useRef<HTMLFormElement | null>(null);
 
-  const [formState, action, isPending = true] = useActionState(
+  const [formState, action, isPending] = useActionState(
     actions.createCommentAction,
     { errors: {} }
   );
@@ -62,10 +62,10 @@ export default function CommentCreateForm({
   );
 
   return (
-    <div className="w-1/2 mx-auto">
+    <div className="w-full mx-auto">
       <div className="flex justify-center">
         <Button
-          className="w-1/3 mx-auto hover:bg-blue-500 hover:text-white transition-all duration-300"
+          className="px-6 mx-auto hover:bg-blue-500 hover:text-white transition-all duration-300"
           color="primary"
           size="md"
           variant="bordered"

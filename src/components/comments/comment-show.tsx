@@ -1,14 +1,24 @@
 import Image from "next/image";
 import CommentCreateForm from "@/components/comments/comment-create-form";
-import { enrichedComment } from "@/db/queries/comment-query";
+import {
+  enrichedComment,
+  getCommentsByPostId,
+} from "@/db/queries/comment-query";
+import { db } from "@/db";
 
 interface CommentShowProps {
   commentId: string;
-  comments: enrichedComment[];
+  postID: string;
 }
 
 // TODO: Get a list of comments as 'comments' (data fetching)
-export default function CommentShow({ commentId, comments }: CommentShowProps) {
+export default async function CommentShow({
+  postID,
+  commentId,
+}: CommentShowProps) {
+  // fetch all comments of the post
+  const comments = await getCommentsByPostId(postID);
+
   const comment = comments.find((c) => c.id === commentId);
 
   if (!comment) {
@@ -17,9 +27,7 @@ export default function CommentShow({ commentId, comments }: CommentShowProps) {
 
   const children = comments.filter((c) => c.parentId === commentId);
   const renderedChildren = children.map((child) => {
-    return (
-      <CommentShow key={child.id} commentId={child.id} comments={comments} />
-    );
+    return <CommentShow key={child.id} commentId={child.id} postID={postID} />;
   });
 
   return (

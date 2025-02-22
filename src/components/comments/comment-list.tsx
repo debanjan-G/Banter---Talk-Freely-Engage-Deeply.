@@ -1,25 +1,25 @@
 import CommentShow from "@/components/comments/comment-show";
-import { enrichedComment } from "@/db/queries/comment-query";
+import { db } from "@/db";
+import {
+  enrichedComment,
+  getCommentsByPostId,
+} from "@/db/queries/comment-query";
 
 interface CommentListProps {
-  fetchComments: () => Promise<enrichedComment[]>;
+  postId: string;
 }
 
 // TODO: Get a list of comments from somewhere
-export default async function CommentList({ fetchComments }: CommentListProps) {
-  // fetching all comments of current post
-  const comments = await fetchComments();
+export default async function CommentList({ postId }: CommentListProps) {
+  // fetching comments of post with id 'postId'
+  const comments = await getCommentsByPostId(postId);
 
   const topLevelComments = comments.filter(
     (comment) => comment.parentId === null
   );
   const renderedComments = topLevelComments.map((comment) => {
     return (
-      <CommentShow
-        key={comment.id}
-        commentId={comment.id}
-        comments={comments}
-      />
+      <CommentShow commentId={comment.id} key={comment.id} postID={postId} />
     );
   });
 
