@@ -1,6 +1,4 @@
 import PostShow from "@/components/posts/post-show";
-import { db } from "@/db";
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import React from "react";
 import paths from "@/utils/paths";
@@ -22,7 +20,7 @@ const page = async ({ params }: PageProps) => {
     <div className="p-4">
       <Link href={paths.viewTopic(topicName)}>← back to {topicName}</Link>
       <PostShow postId={postId} />;
-      <CommentCreateForm postId={postId} topicName={topicName} startOpen />
+      <CommentCreateForm postId={postId} startOpen />
       <CommentList fetchComments={() => getCommentsByPostId(postId)} />
     </div>
   );

@@ -92,8 +92,22 @@ export const createCommentAction = async (
   }
 
   // Fetch topic for revalidation
+  // const topic = await db.topic.findFirst({
+  //   where: { posts: { some: { id: postId } } },
+  // });
+
+  // if (!topic) {
+  //   return {
+  //     errors: {
+  //       _form: ["Failed to revalidate topic"],
+  //     },
+  //   };
+  // }
+
   const topic = await db.topic.findFirst({
-    where: { posts: { some: { id: postId } } },
+    where: {
+      posts: { some: { id: postId } },
+    },
   });
 
   if (!topic) {

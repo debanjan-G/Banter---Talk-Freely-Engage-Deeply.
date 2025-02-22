@@ -9,14 +9,12 @@ import * as actions from "@/actions";
 
 interface CommentCreateFormProps {
   postId: string;
-  topicName: string;
   parentId?: string;
   startOpen?: boolean;
 }
 
 export default function CommentCreateForm({
   postId,
-  topicName,
   parentId,
   startOpen,
 }: CommentCreateFormProps) {
@@ -41,7 +39,6 @@ export default function CommentCreateForm({
   const form = (
     <form className="my-2" action={action} ref={ref}>
       <input type="hidden" name="postId" value={postId} />
-      <input type="hidden" name="topicName" value={topicName} />
       <input type="hidden" name="parentId" value={parentId} />
       <div className="space-y-2 px-1">
         <Textarea
