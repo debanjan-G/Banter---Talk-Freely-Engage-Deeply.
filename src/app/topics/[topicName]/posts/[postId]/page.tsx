@@ -21,7 +21,7 @@ const page = async ({ params }: PageProps) => {
       <Link href={paths.viewTopic(topicName)}>← back to {topicName}</Link>
       <PostShow postId={postId} />;
       <CommentCreateForm postId={postId} startOpen />
-      <CommentList fetchComments={() => getCommentsByPostId(postId)} />
+      <CommentList postId={postId} />
     </div>
   );
 };
