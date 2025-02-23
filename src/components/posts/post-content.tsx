@@ -1,10 +1,7 @@
 "use client";
 
 import React from "react";
-
-import paths from "@/utils/paths";
 import { Card, CardBody, CardHeader, Divider } from "@heroui/react";
-import Link from "next/link";
 
 interface postContentProps {
   title: string;

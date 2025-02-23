@@ -17,7 +17,6 @@ export default async function PostShow({ postId }: PostShowProps) {
 
   return (
     <>
-      {/* <PostContent> display only the title and content of the post */}
       <PostContent title={post.title} content={post.content} />
     </>
   );

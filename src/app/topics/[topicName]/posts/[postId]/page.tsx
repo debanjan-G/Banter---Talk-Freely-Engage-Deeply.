@@ -4,7 +4,8 @@ import React from "react";
 import paths from "@/utils/paths";
 import CommentCreateForm from "@/components/comments/comment-create-form";
 import CommentList from "@/components/comments/comment-list";
-import { getCommentsByPostId } from "@/db/queries/comment-query";
+import { Suspense } from "react";
+import { PostShowLoading } from "@/components/posts/post-show-loading";
 
 interface PageProps {
   params: Promise<{
@@ -19,8 +20,13 @@ const page = async ({ params }: PageProps) => {
   return (
     <div className="p-4">
       <Link href={paths.viewTopic(topicName)}>← back to {topicName}</Link>
-      <PostShow postId={postId} />;
+
+      <Suspense fallback={<PostShowLoading />}>
+        <PostShow postId={postId} />;
+      </Suspense>
+
       <CommentCreateForm postId={postId} startOpen />
+
       <CommentList postId={postId} />
     </div>
   );

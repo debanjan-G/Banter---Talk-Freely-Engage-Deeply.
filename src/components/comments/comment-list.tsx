@@ -1,9 +1,5 @@
 import CommentShow from "@/components/comments/comment-show";
-import { db } from "@/db";
-import {
-  enrichedComment,
-  getCommentsByPostId,
-} from "@/db/queries/comment-query";
+import { getCommentsByPostId } from "@/db/queries/comment-query";
 
 interface CommentListProps {
   postId: string;
