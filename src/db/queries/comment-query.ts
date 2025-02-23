@@ -8,7 +8,7 @@ export type enrichedComment = Comment & {
 
 export const getCommentsByPostId = cache(
   (postId: string): Promise<enrichedComment[]> => {
-    console.log("fetching comments");
+    // console.log("fetching comments");
 
     const comments = db.comment.findMany({
       where: {

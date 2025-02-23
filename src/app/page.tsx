@@ -14,7 +14,6 @@ export default async function Home() {
       <div className="flex justify-evenly gap-10">
         <PostsContainer>
           <h1 className="text-lg">No posts to show</h1>
-          {/* <PostList fetchPost={fetchTopPosts} /> */}
         </PostsContainer>
         <div className="w-1/4 flex-col justify-center items-center gap-4">
           <CreateTopicModal />

@@ -31,5 +31,15 @@ export default async function PostList({ fetchPost }: PostListProps) {
     );
   });
 
-  return <div className="space-y-2">{renderedPosts}</div>;
+  return (
+    <div className="space-y-2">
+      {renderedPosts.length === 0 ? (
+        <h1 className="text-xl font-light">
+          No posts under this topic. Click on the New Post button to create one.
+        </h1>
+      ) : (
+        renderedPosts
+      )}
+    </div>
+  );
 }

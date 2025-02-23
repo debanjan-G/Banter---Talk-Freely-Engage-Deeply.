@@ -47,6 +47,8 @@ export const createTopicAction = async (
 
   // getting hold of data that is to be validated
   const title = formData.get("title");
+  console.log("Topic Name = ", title);
+
   const description = formData.get("description");
 
   // perform validation checks
@@ -90,6 +92,8 @@ export const createTopicAction = async (
 
   // revalidate home path
   revalidatePath("/");
+
+  // console.log();
 
   // redirect user to that topic route
   redirect(paths.viewTopic(topic.slug));

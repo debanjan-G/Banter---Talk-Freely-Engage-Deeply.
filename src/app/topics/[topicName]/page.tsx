@@ -2,9 +2,10 @@ import PostsContainer from "@/components/posts/PostsContainer";
 import React from "react";
 import CreatePostModal from "@/components/posts/CreatePostModal";
 import { db } from "@/db";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import PostList from "@/components/posts/post-list";
 import { fetchPostsByTopicName } from "@/db/queries/post-query";
+import paths from "@/utils/paths";
 
 interface PageProps {
   params: Promise<{
@@ -14,11 +15,14 @@ interface PageProps {
 
 const page = async ({ params }: PageProps) => {
   const { topicName } = await params;
+  console.log("TOPIC NAME = ", topicName);
+
+  const normalizedTopicName = topicName.replace(/%20/g, " "); //replacing all occurens of "%20" with " "
 
   // Fetch topic from DB
   const topic = await db.topic.findFirst({
     where: {
-      slug: topicName,
+      slug: normalizedTopicName,
     },
   });
 
