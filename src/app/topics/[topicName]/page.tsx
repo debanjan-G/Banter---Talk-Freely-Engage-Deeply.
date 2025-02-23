@@ -2,10 +2,9 @@ import PostsContainer from "@/components/posts/PostsContainer";
 import React from "react";
 import CreatePostModal from "@/components/posts/CreatePostModal";
 import { db } from "@/db";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import PostList from "@/components/posts/post-list";
 import { fetchPostsByTopicName } from "@/db/queries/post-query";
-import paths from "@/utils/paths";
 
 interface PageProps {
   params: Promise<{

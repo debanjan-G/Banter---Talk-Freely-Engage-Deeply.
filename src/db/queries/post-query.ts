@@ -63,3 +63,39 @@ export function fetchPostsByTopicName(
     },
   }) as Promise<EnrichedPost[]>; // Type assertion to match PostsType
 }
+
+export function getPostsBySearch(term: string): Promise<EnrichedPost[]> {
+  return db.post.findMany({
+    where: {
+      OR: [
+        {
+          title: {
+            contains: term,
+          },
+        },
+        {
+          content: {
+            contains: term,
+          },
+        },
+      ],
+    },
+    include: {
+      topic: {
+        select: {
+          slug: true,
+        },
+      },
+      user: {
+        select: {
+          name: true,
+        },
+      },
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
+    },
+  }) as Promise<EnrichedPost[]>;
+}

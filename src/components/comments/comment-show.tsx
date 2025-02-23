@@ -1,10 +1,6 @@
 import Image from "next/image";
 import CommentCreateForm from "@/components/comments/comment-create-form";
-import {
-  enrichedComment,
-  getCommentsByPostId,
-} from "@/db/queries/comment-query";
-import { db } from "@/db";
+import { getCommentsByPostId } from "@/db/queries/comment-query";
 
 interface CommentShowProps {
   commentId: string;

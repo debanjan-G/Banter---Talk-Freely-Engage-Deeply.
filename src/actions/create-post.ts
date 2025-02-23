@@ -122,5 +122,5 @@ export const createPostAction = async (
   revalidatePath(paths.viewTopic(topic.slug));
 
   // Redirect user to post page
-  redirect(paths.viewPost(topic.slug, Number(post.id)));
+  redirect(paths.viewPost(topic.slug, post.id));
 };

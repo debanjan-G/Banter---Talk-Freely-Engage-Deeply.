@@ -17,7 +17,6 @@ import {
 import * as actions from "@/actions";
 
 import React, { useActionState } from "react";
-import { useSession } from "next-auth/react";
 
 interface createPostModalPropsType {
   topicId: string;
@@ -25,9 +24,6 @@ interface createPostModalPropsType {
 
 const CreatePostModal = ({ topicId }: createPostModalPropsType) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const session = useSession();
-  const userId = session.data?.user?.id;
 
   const [formState, formAction, isPending] = useActionState(
     actions.createPostAction,

@@ -22,7 +22,7 @@ const page = async ({ params }: PageProps) => {
       <Link href={paths.viewTopic(topicName)}>← back to {topicName}</Link>
 
       <Suspense fallback={<PostShowLoading />}>
-        <PostShow postId={postId} />;
+        <PostShow postId={postId} />
       </Suspense>
 
       <CommentCreateForm postId={postId} startOpen />

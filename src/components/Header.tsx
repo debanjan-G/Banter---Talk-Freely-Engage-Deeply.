@@ -4,7 +4,6 @@ import {
   Navbar,
   NavbarBrand,
   NavbarContent,
-  Input,
   DropdownItem,
   DropdownTrigger,
   Dropdown,
@@ -16,6 +15,8 @@ import Link from "next/link";
 import SignupBtn from "./SignupBtn";
 import { signOut, useSession } from "next-auth/react";
 import SigninBtn from "./SigninBtn";
+import SearchInput from "./search/SearchInput";
+import { Suspense } from "react";
 
 interface SearchIconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
@@ -74,19 +75,9 @@ export default function Header() {
       </NavbarContent>
 
       <NavbarContent justify="center">
-        <Input
-          classNames={{
-            base: " max-w-full sm:max-w-[15rem] h-10",
-            mainWrapper: "h-full",
-            input: "text-small",
-            inputWrapper:
-              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-          }}
-          placeholder="Type to search..."
-          size="sm"
-          startContent={<SearchIcon size={18} />}
-          type="search"
-        />
+        <Suspense>
+          <SearchInput />
+        </Suspense>
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
