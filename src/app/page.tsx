@@ -9,9 +9,7 @@ import { fetchTopPosts } from "@/db/queries/post-query";
 export default async function Home() {
   return (
     <div className="p-4">
-      <h1 className="text-4xl font-extralight text-center mb-4">
-        Connect Over What Moves You.
-      </h1>
+      <h1 className="text-2xl mb-4">Top Posts</h1>
       <div className="flex justify-evenly gap-10">
         <PostsContainer>
           <PostList fetchPost={fetchTopPosts} />
@@ -22,6 +20,9 @@ export default async function Home() {
           <TopicList />
         </div>
       </div>
+      <h1 className="mt-10 text-4xl font-extralight text-center">
+        Connect over what moves you.
+      </h1>
     </div>
   );
 }

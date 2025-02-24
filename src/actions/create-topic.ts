@@ -47,7 +47,8 @@ export const createTopicAction = async (
 
   // getting hold of data that is to be validated
   const title = formData.get("title");
-  console.log("Topic Name = ", title);
+
+  console.log("title = ", title);
 
   const description = formData.get("description");
 

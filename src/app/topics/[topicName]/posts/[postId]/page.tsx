@@ -17,9 +17,13 @@ interface PageProps {
 const page = async ({ params }: PageProps) => {
   const { postId, topicName } = await params;
 
+  const normalizedTopicName = topicName.replaceAll("%20", " ");
+
   return (
     <div className="p-4">
-      <Link href={paths.viewTopic(topicName)}>← back to {topicName}</Link>
+      <Link href={paths.viewTopic(normalizedTopicName)}>
+        ← back to {normalizedTopicName}
+      </Link>
 
       <Suspense fallback={<PostShowLoading />}>
         <PostShow postId={postId} />

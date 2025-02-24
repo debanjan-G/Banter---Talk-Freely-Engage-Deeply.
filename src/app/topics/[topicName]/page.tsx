@@ -17,6 +17,7 @@ const page = async ({ params }: PageProps) => {
   console.log("TOPIC NAME = ", topicName);
 
   const normalizedTopicName = topicName.replace(/%20/g, " "); //replacing all occurens of "%20" with " "
+  console.log("Normalized topic name = ", normalizedTopicName);
 
   // Fetch topic from DB
   const topic = await db.topic.findFirst({
@@ -35,7 +36,9 @@ const page = async ({ params }: PageProps) => {
       <div className="col-span-3 flex flex-col gap-6">
         <h1 className=" text-3xl font-bold">{decodeURIComponent(topicName)}</h1>
         <PostsContainer>
-          <PostList fetchPost={() => fetchPostsByTopicName(topicName)} />
+          <PostList
+            fetchPost={() => fetchPostsByTopicName(normalizedTopicName)}
+          />
         </PostsContainer>
       </div>
 
